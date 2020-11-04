@@ -9,7 +9,7 @@ class Product(models.Model):
     company = models.TextField(
         verbose_name='company',
     )
-    date = models.TextField(
+    date = models.DateField(
         verbose_name='date',
 
     )

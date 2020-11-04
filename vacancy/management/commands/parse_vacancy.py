@@ -1,6 +1,7 @@
 import requests
 import bs4
 import urllib.parse
+import datetime
 
 from django.core.management.base import BaseCommand
 from django.core.management.base import CommandError
@@ -33,6 +34,31 @@ class VacancyParser:
         r = self.session.get(url, params=params)
         return r.text
 
+    @staticmethod
+    def parse_date(item: str):
+        params = item.strip().split()
+        if len(params) == 2:
+            day, month_param = params
+            day = int(day)
+            months_dict = {
+                'января': 1,
+                'февраля': 2,
+                'марта': 3,
+                'апреля': 4,
+                'мая': 5,
+                'июня': 6,
+                'июля': 7,
+                'августа': 8,
+                'сентября': 9,
+                'октября': 10,
+                'ноября': 11,
+                'декабря': 12,
+            }
+            month = months_dict.get(month_param)
+            today = datetime.date.today()
+            return datetime.date(day=day, month=month, year=today.year)
+        return 'не смогли разобрать дату'
+
     def parse_block(self, item):
         url_block = item.select_one('a.bloko-link.HH-LinkModifier')
         if not url_block:
@@ -50,10 +76,13 @@ class VacancyParser:
             raise CommandError('bad "company_block" css')
         company = company_block.string.strip()
 
+        date = None
         date_block = item.select_one('span.vacancy-serp-item__publication-date')
         if not date_block:
             raise CommandError('bad "date_block" css')
-        date = date_block.string.strip()
+        absolute_date = date_block.string.strip()
+        if absolute_date:
+            date = self.parse_date(item=absolute_date)
 
         try:
             p = Product.objects.get(link=url)
