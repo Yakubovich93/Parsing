@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+Vacancies list
+{% endblock %}
+
+{% block content %}
+    <h1>Vacancies Python</h1>
+
+    {% for vacancy in vacancies %}
+
+        <h2>
+            <a href="{{ vacancy.get_absolute_url }}">
+                {{ vacancy.id }}    {{ vacancy.title }}
+            </a>
+        </h2>
+        <p>
+            {{ vacancy.company }}<br>{{ vacancy.date }}<br>{{ vacancy.link }}
+        </p>
+        <p>
+            {{ vacancy.body|linebreaks }}
+        </p>
+
+    {% endfor %}
+
+{% endblock %}

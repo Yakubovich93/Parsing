@@ -8,4 +8,6 @@ from .models import Product
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'date', 'company', 'link')
     list_filter = ('date',)
+    search_fields = ('company',)
+    ordering = ('date',)
     form = ProductForm

@@ -13,7 +13,8 @@ class VacancyParser:
     def __init__(self):
         self.session = requests.Session()
         self.session.headers = {
-            'user-agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36',
+            'user-agent': ('Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36'
+                           ' (KHTML, like Gecko) Chrome/80.0.3987.87 Safari/537.36'),
             'accept': '*/*',
         }
 
@@ -99,7 +100,6 @@ class VacancyParser:
             ).save()
         print(f'Product {p}')
 
-
     def get_pagination_limit(self):
         text = self.get_page()
         soup = bs4.BeautifulSoup(text, 'lxml')
@@ -135,4 +135,3 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         p = VacancyParser()
         p.parse_all()
-        

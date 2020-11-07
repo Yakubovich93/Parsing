@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %} {{ vacancy.id }} {{ vacancy.title }} {% endblock %}
+
+{% block content %}
+     <a href="{% url "app:all_vacancies" %}">ALL VACANCIES</a>
+     <h1>{{ vacancy.id }} {{ vacancy.title }}</h1>
+     <p>
+         {{ vacancy.body|linebreaks }}
+     </p>
+
+     <i>
+          {{ vacancy.company|linebreaks }} {{ vacancy.date }} {{ vacancy.link|linebreaks }}
+     </i>
+
+{% endblock %}
